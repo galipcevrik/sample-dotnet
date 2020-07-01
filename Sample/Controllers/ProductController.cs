@@ -11,10 +11,10 @@ namespace Sample.Controllers
     [Route("api/product")]
     public class ProductController : BaseController
     {
-        [HttpGet, Route("price_convert")]
+        [HttpPost, Route("price_convert")]
         [ProducesResponseType(typeof(JObject), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult PriceConvert(string currency, int price)
+        public IActionResult PriceConvert([FromBody]string currency, [FromBody] int price)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
