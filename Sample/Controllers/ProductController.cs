@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
@@ -20,17 +21,24 @@ namespace Sample.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            string exchangeRate = "http://www.tcmb.gov.tr/kurlar/today.xml";
+            var xmlDoc = new XmlDocument();
+            xmlDoc.Load(exchangeRate);
+
+            var usd = Convert.ToDouble(xmlDoc.SelectSingleNode("Tarih_Date / Currency[@Kod ='USD'] / BanknoteSelling").InnerXml?.Replace('.', ','));
+            var euro = Convert.ToDouble(xmlDoc.SelectSingleNode("Tarih_Date / Currency[@Kod ='EUR'] / BanknoteSelling").InnerXml?.Replace('.', ','));
+
             var data = new ProductPrice();
 
             if (product.Currency.ToLower() == "dollar (usa)")
-                data.RateOfExchange = product.RateOfExchange <= 0 ? 6.80 : product.RateOfExchange;
+                data.RateOfExchange = product.RateOfExchange <= 0 ? usd : product.RateOfExchange;
 
 
             if (product.Currency.ToLower() == "euro")
-                data.RateOfExchange = product.RateOfExchange <= 0 ? 6.80 : product.RateOfExchange;
+                data.RateOfExchange = product.RateOfExchange <= 0 ? euro : product.RateOfExchange;
 
             data.Price = product.Price * data.RateOfExchange;
-            product.Currency = "Turkish Liras";
+            data.Currency = "Turkish Liras";
 
             return Ok(data);
         }
