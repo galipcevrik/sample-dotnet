@@ -44,9 +44,10 @@ namespace Sample.Controllers
             var nfi = new CultureInfo("en-US").NumberFormat;
             nfi.NumberDecimalSeparator = ".";
             nfi.NumberGroupSeparator = "," ;
+            nfi.CurrencySymbol = "" ;
 
             //Kur degisim islemini yaparak donecegimiz degere setliyoruz.
-            data.Price = (Convert.ToDecimal(product.Price.Replace('.', ',')) * data.RateOfExchange).ToString(nfi);
+            data.Price = (Convert.ToDecimal(product.Price.Replace('.', ',')) * data.RateOfExchange).ToString("C",nfi);
             data.Currency = "Turkish Liras";
 
             return Ok(data);
