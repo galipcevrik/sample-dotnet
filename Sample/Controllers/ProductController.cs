@@ -40,14 +40,14 @@ namespace Sample.Controllers
             if (product.Currency.ToLower() == "euro")
                 data.RateOfExchange = product.RateOfExchange <= 0 ? euro : product.RateOfExchange;
 
-           //Culture ve sayisal ayraclari belirliyoruz.
+            //Culture ve sayisal ayraclari belirliyoruz.
             var nfi = new CultureInfo("en-US").NumberFormat;
             nfi.NumberDecimalSeparator = ".";
-            nfi.NumberGroupSeparator = "," ;
-            nfi.CurrencySymbol = "" ;
+            nfi.NumberGroupSeparator = ",";
+            nfi.CurrencySymbol = "";
 
             //Kur degisim islemini yaparak donecegimiz degere setliyoruz.
-            data.Price = (Convert.ToDecimal(product.Price.Replace('.', ',')) * data.RateOfExchange).ToString("C",nfi);
+            data.Price = (Convert.ToDecimal(product.Price.Replace('.', ',')) * data.RateOfExchange).ToString("C", nfi);
             data.Currency = "Turkish Liras";
 
             return Ok(data);
