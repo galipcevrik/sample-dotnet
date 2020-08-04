@@ -22,7 +22,7 @@ namespace Sample.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            //Merkez banka gunluk kur degerlerini cekiyoruz.
+            //Merkez bankasi gunluk kur degerlerini cekiyoruz.
             string exchangeRate = "http://www.tcmb.gov.tr/kurlar/today.xml";
             var xmlDoc = new XmlDocument();
             xmlDoc.Load(exchangeRate);
@@ -40,9 +40,13 @@ namespace Sample.Controllers
             if (product.Currency.ToLower() == "euro")
                 data.RateOfExchange = product.RateOfExchange <= 0 ? euro : product.RateOfExchange;
 
+           //Culture ve sayisal ayraclari belirliyoruz.
+            var nfi = new CultureInfo("en-US").NumberFormat;
+            nfi.NumberDecimalSeparator = ".";
+            nfi.NumberGroupSeparator = "," ;
+
             //Kur degisim islemini yaparak donecegimiz degere setliyoruz.
-            var nfi = new NumberFormatInfo { NumberDecimalSeparator = ".", NumberGroupSeparator = "," };
-            data.Price = (Convert.ToDecimal(product.Price) * data.RateOfExchange).ToString(nfi);
+            data.Price = (Convert.ToDecimal(product.Price.Replace('.', ',')) * data.RateOfExchange).ToString(nfi);
             data.Currency = "Turkish Liras";
 
             return Ok(data);
