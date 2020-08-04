@@ -14,7 +14,7 @@ namespace Sample.Controllers
     public class ProductController : BaseController
     {
         [HttpPost, Route("price_convert")]
-        [ProducesResponseType(typeof(ProductPrice), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult PriceConvert([FromBody]ProductPrice product)
         {
@@ -25,7 +25,7 @@ namespace Sample.Controllers
             var xmlDoc = new XmlDocument();
             xmlDoc.Load(exchangeRate);
 
-            var usd = Convert.ToDouble(xmlDoc.SelectSingleNode("Tarih_Date / Currency[@Kod ='USD'] / BanknoteSelling").InnerXml?.Replace('.', ','));
+            var usd = double.Parse(xmlDoc.SelectSingleNode("Tarih_Date / Currency[@Kod ='USD'] / BanknoteSelling").InnerXml?.Replace('.', ','));
             var euro = Convert.ToDouble(xmlDoc.SelectSingleNode("Tarih_Date / Currency[@Kod ='EUR'] / BanknoteSelling").InnerXml?.Replace('.', ','));
 
             var data = new ProductPrice();
@@ -38,9 +38,9 @@ namespace Sample.Controllers
                 data.RateOfExchange = product.RateOfExchange <= 0 ? euro : product.RateOfExchange;
 
             data.Price = product.Price * data.RateOfExchange;
-            data.Currency = "Turkish Liras";
+            //data.Currency = "Turkish Liras";
 
-            return Ok(data);
+            return Ok(data.Price.ToString().Replace(',', '.'));
         }
     }
 }
