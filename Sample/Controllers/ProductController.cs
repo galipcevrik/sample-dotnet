@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
@@ -40,7 +41,8 @@ namespace Sample.Controllers
                 data.RateOfExchange = product.RateOfExchange <= 0 ? euro : product.RateOfExchange;
 
             //Kur degisim islemini yaparak donecegimiz degere setliyoruz.
-            data.Price = (Convert.ToDecimal(product.Price) * data.RateOfExchange).ToString();
+            var nfi = new NumberFormatInfo { NumberDecimalSeparator = ".", NumberGroupSeparator = "," };
+            data.Price = (Convert.ToDecimal(product.Price) * data.RateOfExchange).ToString(nfi);
             data.Currency = "Turkish Liras";
 
             return Ok(data);
