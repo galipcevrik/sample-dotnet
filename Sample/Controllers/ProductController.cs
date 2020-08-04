@@ -41,9 +41,9 @@ namespace Sample.Controllers
                 data.RateOfExchange = product.RateOfExchange <= 0 ? euro : product.RateOfExchange;
 
             //Culture ve sayisal ayraclari belirliyoruz.
-            var nfi = new CultureInfo("en-US").NumberFormat;
-            nfi.NumberDecimalSeparator = ".";
-            nfi.NumberGroupSeparator = ",";
+            var nfi = new CultureInfo("en-US", false).NumberFormat;
+            nfi.NumberDecimalSeparator = ",";
+            nfi.NumberGroupSeparator = ".";
             nfi.CurrencySymbol = "";
 
             //Kur degisim islemini yaparak donecegimiz degere setliyoruz.
