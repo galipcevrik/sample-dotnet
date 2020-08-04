@@ -27,8 +27,8 @@ namespace Sample.Controllers
             xmlDoc.Load(exchangeRate);
 
             //Merkez bankasi uzerindeki guncel dolar ve euro kur degerlerini aliyoruz.
-            var usd = Convert.ToDouble(xmlDoc.SelectSingleNode("Tarih_Date / Currency[@Kod ='USD'] / BanknoteSelling").InnerXml?.Replace('.', ','));
-            var euro = Convert.ToDouble(xmlDoc.SelectSingleNode("Tarih_Date / Currency[@Kod ='EUR'] / BanknoteSelling").InnerXml?.Replace('.', ','));
+            var usd = Convert.ToDecimal(xmlDoc.SelectSingleNode("Tarih_Date / Currency[@Kod ='USD'] / BanknoteSelling").InnerXml?.Replace('.', ','));
+            var euro = Convert.ToDecimal(xmlDoc.SelectSingleNode("Tarih_Date / Currency[@Kod ='EUR'] / BanknoteSelling").InnerXml?.Replace('.', ','));
 
             var data = new ProductPrice();
 
@@ -40,7 +40,7 @@ namespace Sample.Controllers
                 data.RateOfExchange = product.RateOfExchange <= 0 ? euro : product.RateOfExchange;
 
             //Kur degisim islemini yaparak donecegimiz degere setliyoruz.
-            data.Price = (Convert.ToDouble(product.Price.Replace(".", ",")) * data.RateOfExchange).ToString().Replace(",", ".");
+            data.Price = (Convert.ToDecimal(product.Price) * data.RateOfExchange).ToString();
             data.Currency = "Turkish Liras";
 
             return Ok(data);

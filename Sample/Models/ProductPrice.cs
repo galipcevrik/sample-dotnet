@@ -9,7 +9,7 @@ namespace Sample.Models
     public class ProductPrice
     {
         [JsonProperty("rate_of_exchange")]
-        public double RateOfExchange { get; set; }
+        public decimal RateOfExchange { get; set; }
 
         [JsonProperty("currency")]
         public string Currency { get; set; }
