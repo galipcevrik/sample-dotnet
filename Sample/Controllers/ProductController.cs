@@ -40,7 +40,7 @@ namespace Sample.Controllers
                 data.RateOfExchange = product.RateOfExchange <= 0 ? euro : product.RateOfExchange;
 
             //Kur degisim islemini yaparak donecegimiz degere setliyoruz.
-            data.Price = (Convert.ToDouble(product.Price.Replace(',', '.')) * data.RateOfExchange).ToString();
+            data.Price = (Convert.ToDouble(product.Price.Replace('.', ',')) * data.RateOfExchange).ToString();
             data.Currency = "Turkish Liras";
 
             return Ok(data);
