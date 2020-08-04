@@ -15,7 +15,7 @@ namespace Sample.Models
         public string Currency { get; set; }
 
         [JsonProperty("price")]
-        public double Price { get; set; }
+        public string Price { get; set; }
 
     }
 }
